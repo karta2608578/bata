@@ -1,9 +1,8 @@
 import streamlit as st
 import time
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options  # 🔥 轉型為 Chrome 核心
+from selenium.webdriver.chrome.options import Options  
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 import re
@@ -74,7 +73,7 @@ if df_doc is not None:
         submit_btn = st.form_submit_button("🚀 開始雲端背景監控")
 
     # ==========================================
-    # 🚀 核心監控 (雲端環境高相容進化版)
+    # 🚀 核心監控 (雲端原生環境最優化版)
     # ==========================================
     if submit_btn:
         target_doctor = selected_doc_info.split(" - ")[1]
@@ -83,16 +82,15 @@ if df_doc is not None:
         
         status_area = st.empty()
         
-        # 🛡️ 【雲端 Chrome 參數極致優化】
         chrome_options = Options()
-        chrome_options.add_argument("--headless")  # 雲端環境必須強制無頭模式
+        chrome_options.add_argument("--headless")  
         chrome_options.add_argument("--disable-gpu")
-        chrome_options.add_argument("--no-sandbox")  # 🔥 Linux 雲端環境必備防崩潰參數
-        chrome_options.add_argument("--disable-dev-shm-usage")  # 🔥 防止記憶體不足爆掉
+        chrome_options.add_argument("--no-sandbox")  
+        chrome_options.add_argument("--disable-dev-shm-usage")  
         chrome_options.add_argument("--window-size=1920,1080")
         chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
         
-        # 🎯 偵測目前是家裡 Windows 還是 Streamlit 雲端 Linux，自動切換驅動路徑
+        # 雲端原生 Chromium 的固定路徑
         if os.path.exists("/usr/bin/chromium-browser"):
             chrome_options.binary_location = "/usr/bin/chromium-browser"
             
@@ -103,9 +101,8 @@ if df_doc is not None:
             while True:
                 if driver is None:
                     try:
-                        # 自動對齊 Chrome/Chromium 驅動
-                        service = Service(ChromeDriverManager().install())
-                        driver = webdriver.Chrome(service=service, options=chrome_options)
+                        # 【核心最佳化】直接調用雲端內建原生環境，不再依賴下載器，完美避開安裝錯誤
+                        driver = webdriver.Chrome(options=chrome_options)
                     except Exception as init_err:
                         status_area.error(f"雲端瀏覽器初始化失敗，5秒後重試... 錯誤: {init_err}")
                         time.sleep(5)
@@ -115,7 +112,6 @@ if df_doc is not None:
                     driver.get(url)
                     time.sleep(5) 
                     
-                    # 模擬選單切換
                     try:
                         dropdown_element = driver.find_element(By.TAG_NAME, "select")
                         dropdown = Select(dropdown_element)
@@ -160,8 +156,6 @@ if df_doc is not None:
                                 line_msg = f"🚨【屏基看診緊急通知：可能已過號】\n\n雲端偵測到叫號瞬間暴跳！【{target_doctor} 醫師】目前叫號已達 {current_number} 號（您的號碼是 {my_number} 號）！請火速前往診間確認！"
                             
                             send_line_push(line_msg)
-                            
-                            # 雲端版移除本機音效播放以提升相容性，完全保留強大的 LINE 通知與氣球特效
                             st.balloons()
                             st.error(line_msg)
                             try: driver.quit()
